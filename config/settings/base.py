@@ -74,7 +74,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "sdap.users.apps.UsersConfig",
+    "sdap.users.apps.UsersAppConfig",
     "sdap.groups.apps.GroupsAppConfig",
     "sdap.tools.apps.ToolsAppConfig",
     "sdap.jobs.apps.JobsAppConfig"
@@ -94,6 +94,7 @@ MIGRATION_MODULES = {"sites": "sdap.contrib.sites.migrations"}
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
+    "guardian.backends.ObjectPermissionBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
