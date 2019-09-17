@@ -68,12 +68,16 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    'guardian',
     "rest_framework",
     "django_celery_beat",
 ]
 
 LOCAL_APPS = [
     "sdap.users.apps.UsersConfig",
+    "sdap.groups.apps.GroupsAppConfig",
+    "sdap.tools.apps.ToolsAppConfig",
+    "sdap.jobs.apps.JobsAppConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
