@@ -20,25 +20,46 @@ from django.urls import reverse_lazy
 from sdap.files.models import File, Folder
 
 # Create your views here.
-class IndexView(LoginRequiredMixin, generic.ListView):
-    template_name = 'files/index.html'
-    context_object_name = 'folders'
+def index(request):
 
-    # Restrict to user and to first row
-    def get_queryset(self):
-        return Folder.objects.filter(
-            created_by= self.request.user,
+    folders = Folder.objects.filter(
+            created_by= request.user,
             folder=None
-        ).order_by('-created_at')[:5]
+       ).order_by('-created_at')
 
-class SubIndexView(LoginRequiredMixin, generic.ListView):
-    template_name = 'files/index.html'
-    context_object_name = 'folders'
+    files = File.objects.filter(
+            created_by= request.user,
+            folder=None
+        ).order_by('-created_at')
 
-    # Restrict to user and to first row
-    def get_queryset(self):
-        folder_id = self.kwargs['folderid']
-        return Folder.objects.filter(
-            created_by= self.request.user,
-            folder=folder_id
-        ).order_by('-created_at')[:5]
+    context = {'folders': folders, 'files': files}
+
+    return render(request, 'files/index.html', context)
+
+
+def subindex(request, folderid):
+
+
+    previous_folder = Folder.objects.filter(
+            created_by= request.user,
+            folders=folderid
+       )
+
+    if previous_folder:
+        back_url = reverse('files:subindex', kwargs={'folderid': previous_folder[0].id})
+    else:
+        back_url = reverse('files:index')
+
+    folders = Folder.objects.filter(
+            created_by= request.user,
+            folder=folderid
+       ).order_by('-created_at')
+
+    files = File.objects.filter(
+            created_by= request.user,
+            folder=folderid
+        ).order_by('-created_at')
+
+    context = {'folders': folders, 'files': files, 'back_url': back_url}
+
+    return render(request, 'files/index.html', context)
