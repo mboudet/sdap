@@ -70,7 +70,8 @@ def create_job(title, output, owner, task_id):
 
 
 # Move this to task.py
-@app.task
+# THIS MAKES CELERYBEATS CRASH
+#@app.task
 def print_command_line(tool_id, args):
     tool = Tool.objects.get(id=tool_id)
     string = "Command line : {} {} {} ".format(tool.command_line, tool.path, tool.script_name)
