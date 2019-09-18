@@ -50,46 +50,42 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
+              <a class="nav-link" href="#">My files</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">Dropdown
+                aria-haspopup="true" aria-expanded="false">Tools
               </a>
               <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="#">Analysis</a>
+                <a class="dropdown-item" href="#">Pipelines <span class="badge badge-pill badge-default">soon</span></a>
+                <a class="dropdown-item" href="#">Visualization</a>
               </div>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto nav-flex-icons">
-            <li class="nav-item">
-              <a class="nav-link waves-effect waves-light">
-                <i class="fab fa-twitter"></i>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-3334" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Help
               </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link waves-effect waves-light">
-                <i class="fab fa-google-plus-g"></i>
-              </a>
+              <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-3334">
+                <a class="dropdown-item" href="#">FAQ</a>
+                <a class="dropdown-item" href="#">Tutorials</a>
+                <a class="dropdown-item" href="#">Contact</a>
+              </div>
             </li>
             {% if request.user.is_authenticated %}
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-user">
-
-                    </i>
+                    <i class="fas fa-user"></i>
+                    {{request.user.username }}
                   </a>
                   <div class="dropdown-menu dropdown-menu-right dropdown-default"
                     aria-labelledby="navbarDropdownMenuLink-333">
                     <a class="dropdown-item" href="#">Profil</a>
                     <a class="dropdown-item" href="#">Parameters</a> <!-- TODO Only if admin -->
-                    <a class="dropdown-item" href="#">Logout</a>
+                    <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">Logout</a>
                   </div>
                 </li>
             {% endif %}
@@ -115,6 +111,9 @@
       </main>
       <!--Main Layout-->
 
+      
+
+
     <!-- Footer -->
     <footer class="page-footer font-small white fixed-bottom">
 
@@ -127,7 +126,33 @@
     </footer>
 <!-- Footer -->
 
-    {% block modal %}{% endblock modal %}
+   <!-- Modal -->
+   {% block modal %}
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+              <div class="modal-footer">
+                <form method="post" action="{% url 'account_logout' %}">
+                  {% csrf_token %}
+                  {% if redirect_field_value %}
+                  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                  {% endif %}
+                  <button class="btn btn-danger" type="submit">{% trans 'Logout' %}</button>
+                </form>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div> 
+    {% endblock modal %}
 
     <!-- Le javascript
     ================================================== -->
