@@ -3,4 +3,10 @@
 
 {% block content %}
 
+{% for folder in folders %}
+
+    <h3><a href="{% url 'files:subindex' folder.id %}">{{folder.name}}</a></h3>
+{% endfor %}
+
+
 {% endblock %}

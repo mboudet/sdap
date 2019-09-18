@@ -9,7 +9,6 @@ from django.utils import timezone
 from django.views import View
 from django.shortcuts import redirect
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -18,16 +17,28 @@ from mimetypes import guess_type
 from django.urls import reverse_lazy
 
 
-from sdap.files.models import File
-from celery.result import AsyncResult
+from sdap.files.models import File, Folder
 
 # Create your views here.
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'files/index.html'
-    context_object_name = 'files'
+    context_object_name = 'folders'
 
-    # Restrict to user
+    # Restrict to user and to first row
     def get_queryset(self):
-        return File.objects.filter(
-            created_by= self.request.user
+        return Folder.objects.filter(
+            created_by= self.request.user,
+            folder=None
+        ).order_by('-created_at')[:5]
+
+class SubIndexView(LoginRequiredMixin, generic.ListView):
+    template_name = 'files/index.html'
+    context_object_name = 'folders'
+
+    # Restrict to user and to first row
+    def get_queryset(self):
+        folder_id = self.kwargs['folderid']
+        return Folder.objects.filter(
+            created_by= self.request.user,
+            folder=folder_id
         ).order_by('-created_at')[:5]
