@@ -16,6 +16,7 @@ urlpatterns = [
     # User management
     path("users/", include("sdap.users.urls", namespace="users")),
     path("groups/", include("sdap.groups.urls", namespace="groups")),
+    path("files/", include("sdap.files.urls", namespace="files")),
     path("tools/", include("sdap.tools.urls", namespace="tools")),
     path("jobs/", include("sdap.jobs.urls", namespace="jobs")),
     path("accounts/", include("allauth.urls")),

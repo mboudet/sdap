@@ -76,6 +76,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "sdap.users.apps.UsersAppConfig",
     "sdap.groups.apps.GroupsAppConfig",
+    "sdap.files.apps.FilesAppConfig",
     "sdap.tools.apps.ToolsAppConfig",
     "sdap.jobs.apps.JobsAppConfig"
     # Your stuff: custom apps go here
