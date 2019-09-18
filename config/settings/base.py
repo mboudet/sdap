@@ -68,12 +68,16 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    'guardian',
     "rest_framework",
     "django_celery_beat",
 ]
 
 LOCAL_APPS = [
-    "sdap.users.apps.UsersConfig",
+    "sdap.users.apps.UsersAppConfig",
+    "sdap.groups.apps.GroupsAppConfig",
+    "sdap.tools.apps.ToolsAppConfig",
+    "sdap.jobs.apps.JobsAppConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -90,6 +94,7 @@ MIGRATION_MODULES = {"sites": "sdap.contrib.sites.migrations"}
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
+    "guardian.backends.ObjectPermissionBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
@@ -124,7 +129,6 @@ AUTH_PASSWORD_VALIDATORS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
