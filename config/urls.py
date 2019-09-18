@@ -15,6 +15,9 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("sdap.users.urls", namespace="users")),
+    path("groups/", include("sdap.groups.urls", namespace="groups")),
+    path("tools/", include("sdap.tools.urls", namespace="tools")),
+    path("jobs/", include("sdap.jobs.urls", namespace="jobs")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
