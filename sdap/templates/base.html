@@ -29,6 +29,7 @@
     <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
     
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
     
     
     {% endblock %}
@@ -38,9 +39,9 @@
   <body>
 
       <!--Navbar -->
-      <nav class="mb-1 navbar navbar-expand-lg navbar-dark success-color-dark scrolling-navbar">
+      <nav class="mb-1 navbar navbar-expand-lg navbar-light white scrolling-navbar">
         <a class="navbar-brand" href="{% url 'home' %}">
-          <img src="{% static 'images/logo/logo_light.png' %}" width="100">
+          <img src="{% static 'images/logo/SciLicium_mini.png' %}" width="100">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
           aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,23 +98,25 @@
       </nav>
       <!--/.Navbar -->
 
+      <!--Main Layout-->
+      <main>
+        <div class="container-fluid mt-5">
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+              {% endfor %}
+          {% endif %}
 
-    <div class="container">
-
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          {% endfor %}
-      {% endif %}
-
-      {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
-      {% endblock content %}
-
-    </div> <!-- /container -->
+          {% block content %}
+            <p>Use this document as a way to quick start any new project.</p>
+          {% endblock content %}
+          
+        </div>
+      </main>
+      <!--Main Layout-->
 
     <!-- Footer -->
-    <footer class="page-footer font-small success-color-dark fixed-bottom">
+    <footer class="page-footer font-small white fixed-bottom">
 
       <!-- Copyright -->
       <div class="footer-copyright text-center py-3">© 2019 Copyright:
