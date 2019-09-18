@@ -26,7 +26,6 @@ import sdap.tools.forms as forms
 from sdap.jobs.models import Job
 
 from django.conf import settings
-from sdap.taskapp.celery import app
 
 from time import sleep
 # Create your views here.
