@@ -100,9 +100,22 @@
                 <div class="card-header text-center">
                 Files
                 </div>
-
                 <!--Card content-->
                 <div class="card-body">
+                    <ul style="list-style: none;">
+                    {% for file in files %}
+                        <li> 
+                            <i class="fas 
+                            {% if file.type == 'TEXT' %}fa-file-alt{% endif %}
+                            {% if file.type == 'IMAGE' %}fa-file-image{% endif %}
+                            {% if file.type == 'CSV' %}fa-file-csv{% endif %}
+                            {% if file.type == 'PDF' %}fa-file-pdf{% endif %}
+                            ">
+                            </i> 
+                               <a href="{% url 'files:download_file' file.id %}">{{ file.name}}</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
                 </div>
 
             </div>

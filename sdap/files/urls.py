@@ -7,4 +7,5 @@ app_name = 'files'
 urlpatterns = [
     path('', views.index, name='index'),
     path('folder/<int:folderid>', views.subindex, name='subindex'),
+    path('download/<int:fileid>', views.download_file, name='download_file'),
 ]

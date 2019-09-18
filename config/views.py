@@ -10,10 +10,14 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
 
+from sdap.files.models import File
+from sdap.jobs.models import Job
+
 def HomeView(request):
     if request.user.is_authenticated :
-        context = {}
+        user_files = File.objects.filter(created_by=request.user.id)
+        user_jobs = Job.objects.filter(created_by=request.user.id)
+        context = {'files':user_files, 'jobs':user_jobs}
         return render(request, 'pages/home.html',context)
     else:
-            x = "Not OK"
             return HttpResponseRedirect(reverse('account_login'))

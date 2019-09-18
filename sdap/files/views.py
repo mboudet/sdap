@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from mimetypes import guess_type
 from django.urls import reverse_lazy
+from django.http import HttpResponseForbidden
 
 
 from sdap.files.models import File, Folder
@@ -63,3 +64,17 @@ def subindex(request, folderid):
     context = {'folders': folders, 'files': files, 'back_url': back_url}
 
     return render(request, 'files/index.html', context)
+
+def download_file(request, fileid):
+    file_object = get_object_or_404(File, pk=fileid)
+    print(file_object.created_by)
+    print(request.user.username )
+
+    if file_object.created_by != request.user.username :
+        return HttpResponseForbidden()
+    else :
+        filename = file_object.file.name.split('/')[-1]
+        response = HttpResponse(file_object.file, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+        return response

@@ -25,6 +25,9 @@ class File(models.Model):
         ('TEXT', 'Text'),
         ('IMAGE', 'Image'),
         ('CSV', 'Csv'),
+        ('PDF', 'Pdf'),
+        ('RDATA', 'RDdata'),
+        ('EXPRESSION_MATRIX', 'Expression matrix'),
     )
 
     name = models.CharField(max_length=200)
