@@ -280,3 +280,11 @@ sdap/media/
 .env
 .envs/*
 !.envs/.local/
+sdap/tools/migrations/Icon
+sdap/tools/migrations/Icon
+sdap/groups/Icon
+sdap/groups/migrations/Icon
+sdap/jobs/Icon
+sdap/jobs/migrations/Icon
+sdap/templates/groups/Icon
+sdap/tools/Icon

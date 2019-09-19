@@ -1,1 +1,158 @@
 {% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid mt-5">
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+
+            <h4 class="mb-2 mb-sm-0 pt-1">
+                <a href="{% url 'home'%}">Home Page</a>
+                <span>/</span>
+                <span>{{request.user.username }} - Dashboard</span>
+            </h4>
+
+            <form class="d-flex justify-content-center">
+                <!-- Default input -->
+                <input type="search" placeholder="Type your query (available soon)" aria-label="Search" class="form-control">
+                <button class="btn btn-primary btn-sm my-0 p" type="submit">
+                <i class="fa fa-search"></i>
+                </button>
+
+            </form>
+
+            </div>
+
+        </div>
+        <!-- Heading -->
+
+        <!--Grid row-->
+        <div class="row wow fadeIn align-items-center">
+
+            <!--Grid column-->
+            <div class="col-md-9 mb-4">
+
+                <!--Card-->
+                <div class="card">
+
+                    <!-- Card header -->
+                    <div class="card-header text-center">
+                    Job history
+                    </div>
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                    <!-- Table  -->
+                    <table class="table table-hover">
+                        <!-- Table head -->
+                        <thead class="blue-grey lighten-4">
+                        <tr>
+                            <th>#</th>
+                            <th>Job name</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <!-- Table head -->
+
+                        <!-- Table body -->
+                        <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Cell 1</td>
+                            <td>Cell 2</td>
+                            <td>Cell 3</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Cell 4</td>
+                            <td>Cell 5</td>
+                            <td>Cell 6</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Cell 7</td>
+                            <td>Cell 8</td>
+                            <td>Cell 9</td>
+                        </tr>
+                        </tbody>
+                        <!-- Table body -->
+                    </table>
+                    <!-- Table  -->
+
+                    </div>
+
+                </div>
+                <!--/.Card-->
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-3 mb-4">
+
+            <!--Card-->
+            <div class="card mb-4">
+
+                <!-- Card header -->
+                <div class="card-header text-center">
+                Files
+                </div>
+                <!--Card content-->
+                <div class="card-body">
+                    <ul style="list-style: none;">
+                    {% for file in files %}
+                        <li> 
+                            <i class="fas 
+                            {% if file.type == 'TEXT' %}fa-file-alt{% endif %}
+                            {% if file.type == 'IMAGE' %}fa-file-image{% endif %}
+                            {% if file.type == 'CSV' %}fa-file-csv{% endif %}
+                            {% if file.type == 'PDF' %}fa-file-pdf{% endif %}
+                            ">
+                            </i> 
+                               <a href="{% url 'files:download_file' file.id %}">{{ file.name}}</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+            <!--/.Card-->
+
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+
+        <!-- Most used tools -->
+        <div class="row wow fadeIn align-items-center">
+
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        Most used tools
+                    </div>
+                    <div class="card-body">
+                         <div class="row wow fadeIn align-items-center">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Panel title</h5>
+                                        <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
+                                        <a class="card-link">More information</a>
+                                        <a class="card-link">Use</a>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Most used tools -->
+    </div>
+
+
+{% endblock %}
