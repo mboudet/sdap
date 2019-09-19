@@ -69,7 +69,6 @@ def subindex(request, folderid):
 
     return render(request, 'files/index.html', context)
 
-<<<<<<< HEAD
 def view_file(request, fileid):
 
     # Check perm
@@ -133,7 +132,7 @@ def has_permission(user,file):
         has_permission = True
 
     return has_permission
-=======
+
 def download_file(request, fileid):
     file_object = get_object_or_404(File, pk=fileid)
     owner = file_object.created_by
@@ -146,4 +145,3 @@ def download_file(request, fileid):
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
         return response
->>>>>>> upstream/develop
