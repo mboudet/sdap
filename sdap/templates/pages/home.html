@@ -29,7 +29,7 @@
         <!-- Heading -->
 
         <!--Grid row-->
-        <div class="row wow fadeIn align-items-center">
+        <div class="row wow fadeIn">
 
             <!--Grid column-->
             <div class="col-md-9 mb-4">
@@ -52,6 +52,7 @@
                         <tr>
                             <th>#</th>
                             <th>Job name</th>
+                            <th>Tool</th>
                             <th>Date</th>
                             <th>Status</th>
                         </tr>
@@ -60,25 +61,23 @@
 
                         <!-- Table body -->
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Cell 1</td>
-                            <td>Cell 2</td>
-                            <td>Cell 3</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Cell 4</td>
-                            <td>Cell 5</td>
-                            <td>Cell 6</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Cell 7</td>
-                            <td>Cell 8</td>
-                            <td>Cell 9</td>
-                        </tr>
-                        </tbody>
+                            {% for job in jobs %}
+                                <tr>
+                                    <th scope="row" class="
+                                        {% if job.status == 'SUCCESS' %}success-color{% endif %}
+                                        {% if job.status == 'STARTED' %}default-color{% endif %}
+                                        {% if job.status == 'FAILURE' %}danger-color{% endif %}
+                                        {% if job.status == 'PENDING' %}warning-color{% endif %}
+                                    ">
+                                        {{ job.id }}
+                                    </th>
+                                    <td>{{ job.title }}</td>
+                                    <td>{{ job.running_tool }}</td>
+                                    <td>{{ job.created_at }}</td>
+                                    <td>{{ job.status }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
                         <!-- Table body -->
                     </table>
                     <!-- Table  -->
@@ -136,16 +135,21 @@
                     </div>
                     <div class="card-body">
                          <div class="row wow fadeIn align-items-center">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Panel title</h5>
-                                        <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
-                                        <a class="card-link">More information</a>
-                                        <a class="card-link">Use</a>
+                            {% if tools %}
+                                {% for tool in tools %}
+                                <div class="col-md-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ tool.name}}</h5>
+                                            <p class="card-text">{{ tool.short_description }}</p>
+                                            <a class="card-link" href="{% url 'tools:detail' tool.id %}">More information</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                {% endfor %}
+                            {% else %}
+                             <p>No tools available</p>
+                            {% endif %}
                          </div>
                     </div>
                 </div>

@@ -67,10 +67,9 @@ def subindex(request, folderid):
 
 def download_file(request, fileid):
     file_object = get_object_or_404(File, pk=fileid)
-    print(file_object.created_by)
-    print(request.user.username )
+    owner = file_object.created_by
 
-    if file_object.created_by != request.user.username :
+    if owner != request.user :
         return HttpResponseForbidden()
     else :
         filename = file_object.file.name.split('/')[-1]
