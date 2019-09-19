@@ -16,6 +16,10 @@ from django.http import HttpResponse
 from mimetypes import guess_type
 from django.urls import reverse_lazy
 
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
+import pandas as pd
 
 from sdap.files.models import File, Folder
 
@@ -63,3 +67,67 @@ def subindex(request, folderid):
     context = {'folders': folders, 'files': files, 'back_url': back_url}
 
     return render(request, 'files/index.html', context)
+
+def view_file(request, fileid):
+
+    # Check perm
+    file = get_object_or_404(File, id=fileid)
+
+    if not has_permission(request.user, file):
+        return redirect('403/')
+    # Need to make a list of available visualization tools based on type
+    v_types = {
+        'TEXT': ['Raw'],
+        'IMAGE': ['Raw'],
+        'CSV': ['Table', 'Pieplot', 'Barplot']
+    }
+    context = {'types': v_types[file.type], 'file': file}
+    return render(request, 'files/visualize.html', context)
+
+
+def get_visualization_parameters(request, fileid):
+
+    file = get_object_or_404(File, id=fileid)
+    if not has_permission(request.user, file):
+        return redirect('403/')
+    visu_type = request.GET.get('type', '')
+    if not visu_type:
+        return redirect('403/')
+
+    data = {}
+    if file.type == "CSV":
+        # What if it's not tab separated?
+        # Check file existence
+        df = pd.read_csv(file.file, sep=",")
+        df_head = df.head()
+        table_content = df_head.to_html(classes=["table", "table-bordered", "table-striped", "table-hover"])
+        data['html'] = table_content
+    return JsonResponse(data)
+
+def visualize(request, file_id, vizualization_type):
+
+    file = get_object_or_404(File, id=file_id)
+    if not has_permission(request.user, file):
+        return redirect('403/')
+
+    if request.method == 'POST':
+        if form.is_valid():
+            "bla"
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = "bla"
+
+
+    context = {}
+    return render(request, 'files/vizualize.html', context)
+
+
+
+def has_permission(user,file):
+    # TODO: Manage group permissions here
+    has_permission = False
+    if file.created_by == user:
+        has_permission = True
+
+    return has_permission

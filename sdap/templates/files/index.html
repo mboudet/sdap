@@ -12,7 +12,7 @@
 {% endfor %}
 
 {% for file in files %}
-    <h3>{{file.name}}</h3>
+     <h3><a href="{% url 'files:view_file' file.id %}">{{file.name}}</a></h3>
 {% endfor %}
 
 {% if not folders and not files %}
