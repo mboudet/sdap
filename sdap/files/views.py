@@ -23,6 +23,7 @@ from django.http import JsonResponse
 import pandas as pd
 
 from sdap.files.models import File, Folder
+from .forms import VisualisationArgumentForm
 
 # Create your views here.
 def index(request):
@@ -86,44 +87,47 @@ def view_file(request, fileid):
     return render(request, 'files/visualize.html', context)
 
 
-def get_visualization_parameters(request, fileid):
+def get_visualization(request, fileid):
 
     file = get_object_or_404(File, id=fileid)
     if not has_permission(request.user, file):
         return redirect('403/')
-    visu_type = request.GET.get('type', '')
-    if not visu_type:
-        return redirect('403/')
 
     data = {}
-    if file.type == "CSV":
-        # What if it's not tab separated?
-        # Check file existence
-        df = pd.read_csv(file.file, sep=",")
-        df_head = df.head()
-        table_content = df_head.to_html(classes=["table", "table-bordered", "table-striped", "table-hover"])
-        data['html'] = table_content
-    return JsonResponse(data)
-
-def visualize(request, file_id, vizualization_type):
-
-    file = get_object_or_404(File, id=file_id)
-    if not has_permission(request.user, file):
-        return redirect('403/')
 
     if request.method == 'POST':
-        if form.is_valid():
-            "bla"
-        else:
-            data['form_is_valid'] = False
+        # Need to check form
+        data = show_data(file, request.POST)
     else:
-        form = "bla"
+        visu_type = request.GET.get('type', '')
+        if not visu_type:
+            return redirect('403/')
 
+        if visu_type == "Raw" or visu_type == "Table":
+            data['data_table'] = ""
+            form = VisualisationArgumentForm()
+            context = {'form': form}
+            data['form'] = render_to_string('files/form.html',
+                context,
+                request=request
+            )
 
-    context = {}
-    return render(request, 'files/vizualize.html', context)
-
-
+        else:
+            # What if it's not tab separated?
+            # Check file existence
+            df = pd.read_csv(file.file, sep=",")
+            if request.GET.get('transpose', False):
+                df = df.transpose()
+            df_head = df.head()
+            table_content = df_head.to_html(classes=["table","table-bordered","table-striped"], justify='center', max_cols=10)
+            data['data_table'] = table_content
+            form = VisualisationArgumentForm(visu_type=visu_type, table=df)
+            context = {'form': form}
+            data['form'] = render_to_string('files/form.html',
+                context,
+                request=request
+            )
+    return JsonResponse(data)
 
 def has_permission(user,file):
     # TODO: Manage group permissions here
@@ -145,3 +149,57 @@ def download_file(request, fileid):
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
         return response
+
+
+def show_data(file, post_data):
+    data = {}
+    if file.type == "TEXT":
+        content = ""
+        with file.file.open('r') as f:
+            for line in f.readlines():
+                content += line + "<br>"
+        data['content'] = content
+    elif file.type == "IMAGE":
+        content = "<img src='" + file.file.url + "'></img>"
+        data['content'] = content
+    elif file.type == "CSV":
+        df = pd.read_csv(file.file, sep=",")
+        if 'transposed' in post_data:
+            df = df.transpose()
+        if post_data['type'] == "Table":
+            table_content = "<div class='table-responsive' >" + df.to_html(classes=["table","table-bordered","table-striped"], justify='center', max_cols=10) + "</div>"
+            data['content'] = table_content
+        elif post_data['type'] == "Pieplot":
+            data['content'] = createJsonViewPiePlot(df, post_data["Yvalues"])
+        elif post_data['type'] == "Barplot":
+            data['content'] = createJsonViewBarPlot(df, post_data["Yvalues"])
+    return data
+
+
+
+
+def createJsonViewBarPlot(data, row_number):
+    chart = {}
+    chart['config']={'displaylogo':False,'modeBarButtonsToRemove':['toImage','zoom2d','pan2d','lasso2d','resetScale2d']}
+    chart['layout'] = {'showlegend': False,'yaxis':{'tickfont':10},'hovermode': 'closest'}
+    chart['data'] = {
+        'type': "bar",
+        'x': data.columns.to_list(),
+        'y': data.iloc[int(row_number), :].values.tolist()
+    }
+
+    return chart
+
+
+def createJsonViewPiePlot(data, row_number):
+    chart = {}
+    chart['config']={'displaylogo':False,'modeBarButtonsToRemove':['toImage','zoom2d','pan2d','lasso2d','resetScale2d']}
+    chart['layout'] = {'showlegend': False,'yaxis':{'tickfont':10},'hovermode': 'closest'}
+    chart['data'] = {
+        'type': "pie",
+        'labels': data.columns.to_list(),
+        'values': data.iloc[int(row_number), :].values.tolist(),
+        'textposition': 'inside'
+    }
+    return chart
+
