@@ -49,8 +49,6 @@ $(function () {
         } else {
             Plotly.newPlot('visu_results', [data.content.data], data.content.layout);
         }
-        console.log(data.content.data);
-        console.log(data.content.layout);
       }
     });
     return false
