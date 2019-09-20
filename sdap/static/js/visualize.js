@@ -10,11 +10,13 @@ $(function () {
             type: 'GET',
             success: function(response){
                 $("#visu_params").show();
-                $("#params").html(response.html);
+                $("#data_table").html(response.data_table);
             }
         });
     } else {
          $("#visu_params").show();
+         $("#params").html("");
+         $("#data_table").html("");
     }
   };
 

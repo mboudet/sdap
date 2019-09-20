@@ -101,8 +101,8 @@ def get_visualization_parameters(request, fileid):
         # Check file existence
         df = pd.read_csv(file.file, sep=",")
         df_head = df.head()
-        table_content = df_head.to_html(classes=["table", "table-bordered", "table-striped", "table-hover"])
-        data['html'] = table_content
+        table_content = df_head.to_html(classes=["table","table-bordered","table-striped"], justify='center', max_cols=10)
+        data['data_table'] = table_content
     return JsonResponse(data)
 
 def visualize(request, file_id, vizualization_type):
