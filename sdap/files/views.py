@@ -58,6 +58,11 @@ def subindex(request, folderid):
 
     folders = Folder.objects.filter(
             created_by= request.user,
+            folder=None
+       ).order_by('-created_at')
+    
+    have_folder = Folder.objects.filter(
+            created_by= request.user,
             folder=folderid
        ).order_by('-created_at')
 
@@ -66,7 +71,7 @@ def subindex(request, folderid):
             folder=folderid
         ).order_by('-created_at')
 
-    context = {'folders': folders, 'files': files, 'back_url': back_url}
+    context = {'folders': folders, 'files': files, 'have_folder':have_folder ,'back_url': back_url, 'id':folderid}
 
     return render(request, 'files/index.html', context)
 
