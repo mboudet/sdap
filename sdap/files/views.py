@@ -45,22 +45,20 @@ def index(request):
 
 def subindex(request, folderid):
 
+    current_folder = get_object_or_404(Folder, id=folderid)
 
-    previous_folder = Folder.objects.filter(
-            created_by= request.user,
-            folders=folderid
-       )
+    if not has_permission(request.user, current_folder):
+        return redirect('403/')
 
-    if previous_folder:
-        back_url = reverse('files:subindex', kwargs={'folderid': previous_folder[0].id})
-    else:
-        back_url = reverse('files:index')
+    previous_folders = [current_folder]
+    previous_folder = current_folder.folder
 
-    folders = Folder.objects.filter(
-            created_by= request.user,
-            folder=None
-       ).order_by('-created_at')
-    
+    while previous_folder:
+        previous_folders.append(previous_folder)
+        previous_folder = previous_folder.folder
+
+    previous_folders.reverse()
+
     have_folder = Folder.objects.filter(
             created_by= request.user,
             folder=folderid
@@ -71,7 +69,7 @@ def subindex(request, folderid):
             folder=folderid
         ).order_by('-created_at')
 
-    context = {'folders': folders, 'files': files, 'have_folder':have_folder ,'back_url': back_url, 'id':folderid}
+    context = {'folders': previous_folders, 'have_folder': have_folder, 'files': files, 'id':folderid}
 
     return render(request, 'files/index.html', context)
 

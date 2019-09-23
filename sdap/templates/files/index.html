@@ -68,10 +68,6 @@
                                 <li><a href="">Photography</a></li>
                                 <li><a href="">Film</a></li>
                             </ul>
-                            {% if back_url %}
-                                <div class="hr-line-dashed"></div>
-                                <a href="{{back_url}}" class="btn btn-info">Back</a>
-                            {% endif %}
                             <div class="clearfix"></div>
                         </div>
                     </div>
@@ -83,7 +79,7 @@
                         <div class="col-lg-12">
                             <div class="file-box">
                                 <div class="file">
-                                    <a href="{% url 'files:view_file' file.id %}">
+                                    <a href="{% url 'files:subindex' fold.id %}">
                                         <span class="corner"></span>
             
                                         <div class="icon">
