@@ -120,7 +120,7 @@ def get_visualization(request, fileid):
         else:
             # What if it's not tab separated?
             # Check file existence
-            df = pd.read_csv(file.file, sep=",")
+            df = pd.read_csv(file.file, sep=",", encoding="latin1")
             if request.GET.get('transpose', False):
                 df = df.transpose()
             df_head = df.head()
@@ -168,7 +168,7 @@ def show_data(file, post_data):
         content = "<img src='" + file.file.url + "'></img>"
         data['content'] = content
     elif file.type == "CSV":
-        df = pd.read_csv(file.file, sep=",")
+        df = pd.read_csv(file.file, sep=",", encoding="latin1")
         if 'transposed' in post_data:
             df = df.transpose()
         if post_data['type'] == "Table":
