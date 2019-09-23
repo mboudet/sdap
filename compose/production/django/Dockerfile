@@ -1,16 +1,11 @@
+FROM python:3.7.4-stretch
 
-FROM python:3.6-alpine
-
-ENV PYTHONUNBUFFERED 1
-
-RUN apk update \
-  # psycopg2 dependencies
-  && apk add --virtual build-deps gcc python3-dev musl-dev \
-  && apk add postgresql-dev \
-  # Pillow dependencies
-  && apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev \
-  # CFFI dependencies
-  && apk add libffi-dev py-cffi
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.10-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
+    /opt/conda/bin/conda clean -tipsy && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
 
 RUN addgroup -S django \
     && adduser -S -G django django
