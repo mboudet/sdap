@@ -37,7 +37,7 @@ def index(request):
             created_by= request.user,
             folder=None
         ).order_by('-created_at')
-    
+
     filter_category = request.GET.get('filter_category')
     if filter_category and filter_category !='all':
         files = File.objects.filter(
@@ -75,7 +75,7 @@ def subindex(request, folderid):
             created_by= request.user,
             folder=folderid
         ).order_by('-created_at')
-    
+
     filter_category = request.GET.get('filter_category')
     if filter_category and filter_category !='all':
         files = File.objects.filter(
@@ -125,6 +125,33 @@ def create_file(request):
 
     return JsonResponse(data)
 
+def delete_file(request, fileid):
+
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse('account_login'))
+
+    file = get_object_or_404(File, id=fileid)
+    if not file.created_by == request.user:
+        return HttpResponseRedirect(reverse('account_login'))
+    file_id = file.id
+    data = {}
+    if request.method == 'POST':
+        parent = file.folder
+        file.delete()
+        data['form_is_valid'] = True
+        if parent:
+            data['redirect'] = reverse("files:subindex", kwargs={"folderid": parent.id})
+        else:
+            data['redirect'] = reverse("files:index")
+
+    context = {'file_id': file_id}
+    data['html_form'] = render_to_string('files/partial_delete_file.html',
+        context,
+        request=request,
+    )
+
+    return JsonResponse(data)
+
 def create_folder(request):
 
     if not request.user.is_authenticated :
@@ -160,6 +187,38 @@ def create_folder(request):
     )
 
     return JsonResponse(data)
+
+def delete_folder(request, folderid):
+
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse('account_login'))
+
+    folder = get_object_or_404(Folder, id=folderid)
+    if not folder.created_by == request.user:
+        return HttpResponseRedirect(reverse('account_login'))
+    folder_id = folder.id
+    children = get_children(folder)
+    files = children['files']
+    folders = children['folders']
+
+    data = {}
+    if request.method == 'POST':
+        parent = folder.folder
+        folder.delete()
+        data['form_is_valid'] = True
+        if parent:
+            data['redirect'] = reverse("files:subindex", kwargs={"folderid": parent.id})
+        else:
+            data['redirect'] = reverse("files:index")
+
+    context = {'files': files, 'folders': folders, 'folder_id': folder_id}
+    data['html_form'] = render_to_string('files/partial_delete_folder.html',
+        context,
+        request=request,
+    )
+
+    return JsonResponse(data)
+
 
 def view_file(request, fileid):
 
@@ -294,3 +353,11 @@ def createJsonViewPiePlot(data, row_number):
     }
     return chart
 
+def get_children(folder):
+    files = folder.files.all().count()
+    folders = folder.folders.all().count()
+    for subfolder in folder.folders.all():
+        children = get_children(subfolder)
+        files += children['files']
+        folders += children['folders']
+    return {'files': files, 'folders': folders}

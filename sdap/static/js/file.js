@@ -85,6 +85,8 @@ $(function () {
 
   /* Binding */
     $(".js-create").on("click", loadForm);
-    $("#modal-group").on("submit", ".js-create", saveForm);
     $("#modal-group").on("submit", ".js-create-file", saveFormFile);
+    $("#modal-group").on("submit", ".js-create", saveForm);
+    $(".file").on("click", ".js-delete", loadForm);
+    $("#modal-group").on("submit", ".js-delete", saveForm);
 });

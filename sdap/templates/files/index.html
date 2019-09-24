@@ -93,9 +93,8 @@
                         <div class="col-lg-4">
                             <div class="file-box">
                                 <div class="file">
-                                    <a href="{% url 'files:subindex' fold.id %}">
+                                        <a href="{% url 'files:subindex' fold.id %}">
                                         <span class="corner"></span>
-            
                                         <div class="icon">
                                             <i class="fas fa-folder"></i>
                                         </div>
@@ -103,8 +102,12 @@
                                             {{ fold.name }}
                                             <br>
                                             <small>Added: {{ fold.created_at }}</small>
-                                        </div>
-                                    </a>
+                                        </div>                                    
+                                        </a>
+                                        <br>
+                                        <button type="button" class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_folder' fold.id %}"
+                                        <i class="fas fa-trash"></i> Delete
+                                        </button>
                                 </div>
                             </div>
                         </div>
@@ -150,6 +153,9 @@
                                             <small>Added: {{ file.created_at }}</small>
                                         </div>
                                     </a>
+                                    <button type="button" class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_file' file.id %}"
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
                                 </div>
                             </div>
                         </div>
