@@ -37,16 +37,8 @@ def index(request):
             created_by= request.user,
             folder=None
         ).order_by('-created_at')
-    
-    filter_category = request.GET.get('filter_category')
-    if filter_category and filter_category !='all':
-        files = File.objects.filter(
-            created_by= request.user,
-            folder=None,
-            type=filter_category
-        ).order_by('-created_at')
 
-    context = {'folders': folders, 'files': files, 'id':0}
+    context = {'folders': folders, 'files': files}
     return render(request, 'files/index.html', context)
 
 
@@ -76,17 +68,78 @@ def subindex(request, folderid):
             folder=folderid
         ).order_by('-created_at')
     
-    filter_category = request.GET.get('filter_category')
-    if filter_category and filter_category !='all':
-        files = File.objects.filter(
-            created_by= request.user,
-            folder=folderid,
-            type=filter_category
-        ).order_by('-created_at')
-
     context = {'previous_folders': previous_folders, 'have_folder': have_folder, 'files': files, 'id':folderid}
 
     return render(request, 'files/index.html', context)
+
+def files_filter(request):
+    filter_by = request.GET.get('filter_category', '')
+    folderid = request.GET.get('folderid', '')
+  
+    data = {}
+    if folderid == 'na' :
+        folders = Folder.objects.filter(
+            created_by= request.user,
+            folder=None
+       ).order_by('-created_at')
+
+        if filter_by == 'all':
+            files = File.objects.filter(
+                created_by= request.user,
+                folder=None
+            ).order_by('-created_at')
+        else :
+            files = File.objects.filter(
+                created_by= request.user,
+                folder=None,
+                type=filter_by
+            ).order_by('-created_at')
+
+        context = {'folders': folders, 'files': files}
+        data['html_form'] = render_to_string('files/partial_index.html',
+            context,
+            request=request,
+        )
+        return JsonResponse(data)
+    
+    else :
+        current_folder = get_object_or_404(Folder, id=folderid)
+
+        if not has_permission(request.user, current_folder):
+            return redirect('403/')
+
+        previous_folders = [current_folder]
+        previous_folder = current_folder.folder
+
+        while previous_folder:
+            previous_folders.append(previous_folder)
+            previous_folder = previous_folder.folder
+
+        previous_folders.reverse()
+
+        have_folder = Folder.objects.filter(
+                created_by= request.user,
+                folder=folderid
+        ).order_by('-created_at')
+
+        if filter_by == 'all':
+            files = File.objects.filter(
+                    created_by= request.user,
+                    folder=folderid
+                ).order_by('-created_at')
+        else :
+            files = File.objects.filter(
+                    created_by= request.user,
+                    folder=folderid,
+                    type=filter_by
+                ).order_by('-created_at')
+
+        context = {'previous_folders': previous_folders, 'have_folder': have_folder, 'files': files, 'id':folderid}
+        data['html_form'] = render_to_string('files/partial_index.html',
+            context,
+            request=request,
+        )
+        return JsonResponse(data)
 
 def create_file(request):
 
