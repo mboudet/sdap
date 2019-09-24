@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
     <div class="container">
@@ -37,7 +38,13 @@
                             <a href="#" class="file-control">Table</a>
                             <a href="#" class="file-control">Images</a>
                             <div class="hr-line-dashed"></div>
-                            <button class="btn btn-primary btn-block">Upload Files</button>
+                            {% if request.resolver_match.url_name == 'index' %}
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_file' %}">New file</button>
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_folder' %}">New folder</button>
+                            {% else %}
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_file' %}?current={{id}}">New file</button>
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_folder' %}?current={{id}}">New folder</button>
+                            {% endif %}                        
                             <div class="hr-line-dashed"></div>
                             <h5>Folders</h5>
                             <ul class="folder-list" style="padding: 0">
@@ -128,7 +135,17 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modal-group">
+            <div class="modal-dialog"><div class="modal-content"></div></div>
+        </div>
     </div>
-
+    
 
 {% endblock %}
+
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/file.js' %}"></script>
+{% endblock %}
+
