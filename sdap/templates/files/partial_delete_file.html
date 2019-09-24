@@ -1,0 +1,17 @@
+<form method="post" action="{% url 'files:delete_file' file_id %}" class="js-delete">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm file suppression</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="lead">Are you sure you want to remove this file? This cannot be reversed.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-danger">Remove file</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  </div>
+</form>
+
