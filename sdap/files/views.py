@@ -37,7 +37,7 @@ def index(request):
             created_by= request.user,
             folder=None
         ).order_by('-created_at')
-    
+
     filter_category = request.GET.get('filter_category')
     if filter_category and filter_category !='all':
         files = File.objects.filter(
@@ -75,7 +75,7 @@ def subindex(request, folderid):
             created_by= request.user,
             folder=folderid
         ).order_by('-created_at')
-    
+
     filter_category = request.GET.get('filter_category')
     if filter_category and filter_category !='all':
         files = File.objects.filter(

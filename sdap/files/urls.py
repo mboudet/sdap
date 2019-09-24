@@ -14,6 +14,5 @@ urlpatterns = [
     path('file/<int:fileid>', views.view_file, name='view_file'),
     path('file/<int:fileid>/visualize', views.get_visualization, name='get_visualization'),
     path('download/<int:fileid>', views.download_file, name='download_file'),
-    path('filter/<str:filter_by>/<int:fileid>', views.filter_files, name='filter_files'),
 
 ]
