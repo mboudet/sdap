@@ -224,10 +224,27 @@ def view_file(request, fileid):
     # Need to make a list of available visualization tools based on type
     v_types = {
         'TEXT': ['Raw'],
+        'PDF': ['Raw'],
         'IMAGE': ['Raw'],
         'CSV': ['Table', 'Pieplot', 'Barplot']
     }
-    context = {'types': v_types[file.type], 'file': file}
+
+    data =""
+
+    if file.type == "TEXT":
+        content = ""
+        with file.file.open('r') as f:
+            for line in f.readlines():
+                content += line + "<br>"
+        data = content
+
+    if file.type == "CSV":
+        df = pd.read_csv(file.file, sep=';', encoding="latin1")
+        df_head = df.head()
+        table_content = df_head.to_html(classes=["table","table-bordered","table-striped"], justify='center', max_cols=10)
+        data = table_content
+
+    context = {'types': v_types[file.type], 'file': file, 'data':data}
     return render(request, 'files/visualize.html', context)
 
 
