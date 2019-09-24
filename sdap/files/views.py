@@ -37,9 +37,16 @@ def index(request):
             created_by= request.user,
             folder=None
         ).order_by('-created_at')
+    
+    filter_category = request.GET.get('filter_category')
+    if filter_category and filter_category !='all':
+        files = File.objects.filter(
+            created_by= request.user,
+            folder=None,
+            type=filter_category
+        ).order_by('-created_at')
 
-    context = {'folders': folders, 'files': files}
-
+    context = {'folders': folders, 'files': files, 'id':0}
     return render(request, 'files/index.html', context)
 
 
@@ -68,8 +75,16 @@ def subindex(request, folderid):
             created_by= request.user,
             folder=folderid
         ).order_by('-created_at')
+    
+    filter_category = request.GET.get('filter_category')
+    if filter_category and filter_category !='all':
+        files = File.objects.filter(
+            created_by= request.user,
+            folder=folderid,
+            type=filter_category
+        ).order_by('-created_at')
 
-    context = {'folders': previous_folders, 'have_folder': have_folder, 'files': files, 'id':folderid}
+    context = {'previous_folders': previous_folders, 'have_folder': have_folder, 'files': files, 'id':folderid}
 
     return render(request, 'files/index.html', context)
 
@@ -250,7 +265,7 @@ def get_visualization(request, fileid):
         else:
             # What if it's not tab separated?
             # Check file existence
-            df = pd.read_csv(file.file, sep=",")
+            df = pd.read_csv(file.file, sep=",", encoding="latin1")
             if request.GET.get('transpose', False):
                 df = df.transpose()
             df_head = df.head()
@@ -298,7 +313,7 @@ def show_data(file, post_data):
         content = "<img src='" + file.file.url + "'></img>"
         data['content'] = content
     elif file.type == "CSV":
-        df = pd.read_csv(file.file, sep=",")
+        df = pd.read_csv(file.file, sep=",", encoding="latin1")
         if 'transposed' in post_data:
             df = df.transpose()
         if post_data['type'] == "Table":

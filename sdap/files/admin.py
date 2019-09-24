@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import File, Folder
+from .models import File, Folder, Tag
 
 # Register your models here.
 class FilesAdmin(admin.ModelAdmin):
@@ -21,3 +21,4 @@ class FoldersAdmin(admin.ModelAdmin):
 
 admin.site.register(File, FilesAdmin)
 admin.site.register(Folder, FoldersAdmin)
+admin.site.register(Tag)
