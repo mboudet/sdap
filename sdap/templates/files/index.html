@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
     <div class="container">
@@ -9,7 +10,14 @@
             <div class="card-body d-sm-flex justify-content-between">
 
             <h4 class="mb-2 mb-sm-0 pt-1">
-                <span>{{request.user.username }} - My files</span>
+                <span>
+                    Path: 
+                    <a href="{% url 'files:index'%}" style="text-decoration: none;">home</a>/
+                    {% for folder in previous_folders %}
+                        <a href="{% url 'files:subindex' folder.id %}" style="text-decoration: none;">{{folder.name}}</a>/
+                    {% endfor %}
+                
+                </span>
             </h4>
 
             <form class="d-flex justify-content-center">
@@ -32,10 +40,10 @@
                     <div class="ibox-content">
                         <div class="file-manager">
                             <h5>My files:</h5>
-                            <a href="#" class="file-control active">All</a>
-                            <a href="#" class="file-control">Documents</a>
-                            <a href="#" class="file-control">Table</a>
-                            <a href="#" class="file-control">Images</a>
+                            <a onClick="get_filter_file('all')" class="file-control active">All</a>
+                            <a onClick="get_filter_file('PDF')" class="file-control">PDF</a>
+                            <a onClick="get_filter_file('CSV')" class="file-control">Table</a>
+                            <a onClick="get_filter_file('IMAGE')" class="file-control">Images</a>
                             <div class="hr-line-dashed"></div>
                             <button class="btn btn-primary btn-block">Upload Files</button>
                             <div class="hr-line-dashed"></div>
@@ -47,7 +55,7 @@
                                     </a>
                                 </li>
                                 <i class=""></i>
-                                {% for folder in folders %}
+                                {% for folder in previous_folders %}
                                     <li><a href="{% url 'files:subindex' folder.id %}">
                                         <i class="
                                             {% if id == folder.id %} fas fa-folder-open
@@ -73,10 +81,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9 animated fadeInRight">
+            <div class="col-md-9 fadeInRight">
                 <div class="row">
                     {% for fold in have_folder %}
-                        <div class="col-lg-12">
+                        <div class="col-lg-4">
                             <div class="file-box">
                                 <div class="file">
                                     <a href="{% url 'files:subindex' fold.id %}">
@@ -95,8 +103,28 @@
                             </div>
                         </div>
                     {% endfor %}
+                    {% for folder in folders %}
+                        <div class="col-lg-4">
+                            <div class="file-box">
+                                <div class="file">
+                                    <a href="{% url 'files:subindex' folder.id %}">
+                                        <span class="corner"></span>
+            
+                                        <div class="icon">
+                                            <i class="fas fa-folder"></i>
+                                        </div>
+                                        <div class="file-name">
+                                            {{ folder.name }}
+                                            <br>
+                                            <small>Added: {{ folder.created_at }}</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                     {% for file in files %}
-                        <div class="col-lg-12">
+                        <div class="col-lg-4">
                             <div class="file-box">
                                 <div class="file">
                                     <a href="{% url 'files:view_file' file.id %}">
@@ -132,3 +160,20 @@
 
 
 {% endblock %}
+
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        var folder_id = "na"
+    </script>
+    {% if id %}
+        <script>
+            var folder_id = "{{ id | safe }}"
+        </script>
+    {% endif %}
+    <script>
+        var filter_url = "{% url 'files:index' %}"
+    </script>
+    <script src="{% static 'js/filter.js' %}"></script>
+{% endblock %} 
