@@ -28,7 +28,7 @@ class VisualisationArgumentForm(forms.Form):
 
 class FileCreateForm(forms.ModelForm):
 
-    folder = forms.ModelChoiceField(Folder.objects.all(), empty_label="/")
+    folder = forms.ModelChoiceField(Folder.objects.all(), empty_label="/", required=False)
 
     class Meta:
         model = File
@@ -57,7 +57,7 @@ class FileCreateForm(forms.ModelForm):
 
 class FolderCreateForm(forms.ModelForm):
 
-    folder = forms.ModelChoiceField(Folder.objects.all(), empty_label="/")
+    folder = forms.ModelChoiceField(Folder.objects.all(), empty_label="/", required=False)
 
     class Meta:
         model = Folder
