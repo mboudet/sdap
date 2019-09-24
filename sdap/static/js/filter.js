@@ -6,7 +6,10 @@ function  get_filter_file(filter_by) {
         type: 'GET',
         data: {
             'filter_category':filter_by,
-            'folder_id':folder_id,
+            'folderid':folder_id,
+        },
+        success: function(response){
+            $("#here").html(response.html_form);
         }
     });
 };

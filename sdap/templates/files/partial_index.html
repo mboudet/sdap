@@ -1,4 +1,3 @@
-{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
@@ -16,6 +15,7 @@
                     {% for folder in previous_folders %}
                         <a href="{% url 'files:subindex' folder.id %}" style="text-decoration: none;">{{folder.name}}</a>/
                     {% endfor %}
+                
                 </span>
             </h4>
 
@@ -92,8 +92,9 @@
                         <div class="col-lg-4">
                             <div class="file-box">
                                 <div class="file">
-                                        <a href="{% url 'files:subindex' fold.id %}">
+                                    <a href="{% url 'files:subindex' fold.id %}">
                                         <span class="corner"></span>
+            
                                         <div class="icon">
                                             <i class="fas fa-folder"></i>
                                         </div>
@@ -101,12 +102,8 @@
                                             {{ fold.name }}
                                             <br>
                                             <small>Added: {{ fold.created_at }}</small>
-                                        </div>                                    
-                                        </a>
-                                        <br>
-                                        <button type="button" class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_folder' fold.id %}"
-                                        <i class="fas fa-trash"></i> Delete
-                                        </button>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -152,9 +149,6 @@
                                             <small>Added: {{ file.created_at }}</small>
                                         </div>
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_file' file.id %}"
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -174,21 +168,3 @@
     
 
 {% endblock %}
-
-
-{% block javascript %}
-    {{ block.super }}
-    <script>
-        var filter_url = "{% url 'files:file_filter' %}"
-        var folder_id = 'na'
-    </script>
-    {% if id %}
-        <script>
-            var folder_id = '{{ id|safe }}'
-        </script>
-    {% endif %}
-
-    <script src="{% static 'js/file.js' %}"></script>
-    <script src="{% static 'js/filter.js' %}"></script>
-{% endblock %}
-
