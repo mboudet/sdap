@@ -23,7 +23,7 @@ from django.http import JsonResponse
 import pandas as pd
 
 from sdap.files.models import File, Folder
-from .forms import VisualisationArgumentForm
+from .forms import VisualisationArgumentForm, FileCreateForm, FolderCreateForm
 
 # Create your views here.
 def index(request):
@@ -88,7 +88,78 @@ def subindex(request, folderid):
 
     return render(request, 'files/index.html', context)
 
+def create_file(request):
 
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse('account_login'))
+
+    data = {}
+    context = {}
+    if request.method == 'POST':
+        form = FileCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            object = form.save()
+            object.created_by = request.user
+            object.save()
+            if object.folder:
+                data['redirect'] = reverse("files:subindex", kwargs={"folderid": object.folder.id})
+            else:
+                data['redirect'] = reverse("files:index")
+            data['form_is_valid'] = True
+        else:
+            context['form_errors'] = form.errors
+            data['form_is_valid'] = False
+    else:
+        available_folders = Folder.objects.filter(created_by = request.user)
+        current_folder = request.GET.get('current', '')
+
+        if current_folder:
+            current_folder = Folder.objects.get(id=current_folder, created_by=request.user)
+        form = FileCreateForm(current_folder=current_folder, folders=available_folders)
+
+    context['form'] = form
+    data['html_form'] = render_to_string('files/partial_create_file.html',
+        context,
+        request=request,
+    )
+
+    return JsonResponse(data)
+
+def create_folder(request):
+
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse('account_login'))
+
+    data = {}
+    if request.method == 'POST':
+        form = FolderCreateForm(request.POST)
+        if form.is_valid():
+            object = form.save()
+            object.created_by = request.user
+            object.save()
+            if object.folder:
+                data['redirect'] = reverse("files:subindex", kwargs={"folderid": object.folder.id})
+            else:
+                data['redirect'] = reverse("files:index")
+            data['form_is_valid'] = True
+        else:
+            context['form_errors'] = form.errors
+            data['form_is_valid'] = False
+    else:
+        available_folders = Folder.objects.filter(created_by = request.user)
+        current_folder = request.GET.get('current', '')
+
+        if current_folder:
+            current_folder = Folder.objects.get(id=current_folder, created_by=request.user)
+        form = FolderCreateForm(current_folder=current_folder, folders=available_folders)
+
+    context = {'form': form}
+    data['html_form'] = render_to_string('files/partial_create_folder.html',
+        context,
+        request=request,
+    )
+
+    return JsonResponse(data)
 
 def view_file(request, fileid):
 

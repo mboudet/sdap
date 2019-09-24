@@ -45,7 +45,13 @@
                             <a onClick="get_filter_file('CSV')" class="file-control">Table</a>
                             <a onClick="get_filter_file('IMAGE')" class="file-control">Images</a>
                             <div class="hr-line-dashed"></div>
-                            <button class="btn btn-primary btn-block">Upload Files</button>
+                            {% if request.resolver_match.url_name == 'index' %}
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_file' %}">New file</button>
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_folder' %}">New folder</button>
+                            {% else %}
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_file' %}?current={{id}}">New file</button>
+                            <button class="btn btn-primary btn-block js-create" data-url="{% url 'files:create_folder' %}?current={{id}}">New folder</button>
+                            {% endif %}                        
                             <div class="hr-line-dashed"></div>
                             <h5>Folders</h5>
                             <ul class="folder-list" style="padding: 0">
@@ -156,24 +162,17 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modal-group">
+            <div class="modal-dialog"><div class="modal-content"></div></div>
+        </div>
     </div>
-
+    
 
 {% endblock %}
 
 
 {% block javascript %}
     {{ block.super }}
-    <script>
-        var folder_id = "na"
-    </script>
-    {% if id %}
-        <script>
-            var folder_id = "{{ id | safe }}"
-        </script>
-    {% endif %}
-    <script>
-        var filter_url = "{% url 'files:index' %}"
-    </script>
-    <script src="{% static 'js/filter.js' %}"></script>
-{% endblock %} 
+    <script src="{% static 'js/file.js' %}"></script>
+{% endblock %}
+
