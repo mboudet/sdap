@@ -47,12 +47,27 @@ $(function () {
     var data = new FormData(this)
     console.log(data);
     $.ajax({
+      xhr: function(){
+        var xhr = new window.XMLHttpRequest();
+        xhr.upload.addEventListener('progress', function(e){
+            if(e.lengthComputable){
+                var percent = Math.round((e.loaded/e.total) * 100);
+                console.log(percent);
+                $('#progress_bar').attr('aria-valuenow', percent).css('width', percent + '%');
+            }
+        })
+
+        return xhr;
+      },
       url: form.attr("action"),
       data: data,
       type: form.attr("method"),
       dataType: 'json',
       processData: false,
       contentType: false,
+      beforeSend: function () {
+        $("#progress_div").show();
+      },
       success: function (return_data) {
         if (return_data.form_is_valid) {
             window.location.href = return_data.redirect
