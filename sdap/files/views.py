@@ -88,69 +88,7 @@ def subindex(request, folderid):
 
     return render(request, 'files/index.html', context)
 
-def filter_files(request, filter_by,folderid ) :
-    #filter_by = request.GET.get('filter', None)
-    #folderid = request.GET.get('folder_id', None)
-    
 
-    if folderid == 0:
-        folders = Folder.objects.filter(
-            created_by= request.user,
-            folder=None
-       ).order_by('-created_at')
-
-        if filter_by != 'all' :
-            files = File.objects.filter(
-                created_by= request.user,
-                folder=None,
-                type=filter_by
-            ).order_by('-created_at')
-        else :
-            files = File.objects.filter(
-                created_by= request.user,
-                folder=None,
-            ).order_by('-created_at')
-        
-        print(files)
-        context = {'folders': folders, 'files': files, 'id':0}
-
-        return render(request, 'files/index.html', context)
-    
-    else :
-        current_folder = get_object_or_404(Folder, id=folderid)
-
-        if not has_permission(request.user, current_folder):
-            return redirect('403/')
-
-        previous_folders = [current_folder]
-        previous_folder = current_folder.folder
-
-        while previous_folder:
-            previous_folders.append(previous_folder)
-            previous_folder = previous_folder.folder
-
-        previous_folders.reverse()
-
-        have_folder = Folder.objects.filter(
-                created_by= request.user,
-                folder=folderid
-        ).order_by('-created_at')
-
-        if filter_by != 'all' :
-            files = File.objects.filter(
-                    created_by= request.user,
-                    folder=folderid,
-                    type=filter_by
-                ).order_by('-created_at')
-        else :
-            files = File.objects.filter(
-                    created_by= request.user,
-                    folder=folderid,
-                ).order_by('-created_at')
-
-        context = {'previous_folders': previous_folders, 'have_folder': have_folder, 'files': files, 'id':folderid}
-
-        return render(request, 'files/index.html', context)
 
 def view_file(request, fileid):
 
