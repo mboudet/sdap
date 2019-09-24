@@ -361,3 +361,11 @@ def get_children(folder):
         files += children['files']
         folders += children['folders']
     return {'files': files, 'folders': folders}
+
+def get_parents(file_or_folder):
+    parents = []
+    parent = file_or_folder.folder
+    while parent:
+        parents.append(parent)
+        parent = parent.folder
+    return parents
