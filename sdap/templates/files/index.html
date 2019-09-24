@@ -150,6 +150,7 @@
                                             {{ file.name }}
                                             <br>
                                             <small>Added: {{ file.created_at }}</small>
+                                            <small>Size: {{ file.file.size | filesizeformat}}</small>
                                         </div>
                                     </a>
                                     <button type="button" class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_file' file.id %}"
