@@ -32,12 +32,13 @@ class FileCreateForm(forms.ModelForm):
 
     class Meta:
         model = File
-        fields = ["name", "description", "type", "file", "folder"]
+        fields = ["name", "description", "type", "file", "folder","tags"]
         labels = {
             "name": "Name of the file",
             "description": "A short description of the file",
             "type": "Type of the file",
             "folder": "This file will be placed in this folder",
+            "tags":"File annotation",
         }
 
     def __init__(self, *args, **kwargs):
