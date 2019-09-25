@@ -19,6 +19,8 @@ import uuid
 import shutil
 
 from celery.result import AsyncResult
+from sdap.taskapp.celery import app
+
 
 from guardian.shortcuts import get_objects_for_user
 from sdap.tools.models import Tool, Category
@@ -70,7 +72,7 @@ def create_job(title, output, owner, task_id):
 
 # Move this to task.py
 # THIS MAKES CELERYBEATS CRASH
-#@app.task
+@app.task
 def print_command_line(tool_id, args):
     tool = Tool.objects.get(id=tool_id)
     string = "Command line : {} {} {} ".format(tool.command_line, tool.path, tool.script_name)
