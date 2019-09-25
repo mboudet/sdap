@@ -30,6 +30,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class CondaEnv(models.Model):
+    display_name = models.CharField(max_length=100)
+    env_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.display_name
+
 class Tool(models.Model):
     AVAILABLE_STATUS = (
         ('STABLE', 'Stable'),
@@ -61,6 +68,7 @@ class Tool(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True, verbose_name=("user"))
     updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_updated_by')
     tags = models.ManyToManyField(Tag, related_name='tool_tag_description')
+    conda_environment = models.ForeignKey(CondaEnv, blank=True, null=True, on_delete=models.CASCADE, related_name='tools')
     argument_types = models.ManyToManyField(ArgumentType, through='Argument')
 
     def __str__(self):
@@ -78,3 +86,4 @@ class Argument(models.Model):
 
     class Meta:
         ordering = ('order',)
+
