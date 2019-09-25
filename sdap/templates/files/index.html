@@ -98,15 +98,12 @@
                                             <i class="fas fa-folder"></i>
                                         </div>
                                         <div class="file-name">
-                                            {{ fold.name }}
-                                            <br>
-                                            <small>Added: {{ fold.created_at }}</small>
-                                        </div>                                    
-                                        </a>
-                                        <br>
-                                        <button type="button" class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_folder' fold.id %}"
-                                        <i class="fas fa-trash"></i> Delete
-                                        </button>
+                                                <a href="{% url 'files:subindex' fold.id %}">{{ fold.name }}</a>
+                                                <br>
+                                                <small>Added: {{ fold.created_at }}</small>
+                                                <br>
+                                                <a class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_folder' fold.id %}"> <i class="fas fa-trash"></i> Delete </a>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -115,18 +112,18 @@
                         <div class="col-lg-4">
                             <div class="file-box">
                                 <div class="file">
-                                    <a href="{% url 'files:subindex' folder.id %}">
-                                        <span class="corner"></span>
-            
-                                        <div class="icon">
-                                            <i class="fas fa-folder"></i>
-                                        </div>
-                                        <div class="file-name">
-                                            {{ folder.name }}
+                                    <span class="corner"></span>
+        
+                                    <div class="icon">
+                                        <i class="fas fa-folder"></i>
+                                    </div>
+                                    <div class="file-name">
+                                            <a href="{% url 'files:subindex' folder.id %}">{{ folder.name }}</a>
                                             <br>
                                             <small>Added: {{ folder.created_at }}</small>
-                                        </div>
-                                    </a>
+                                            <br>
+                                            <a class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_folder' folder.id %}"> <i class="fas fa-trash"></i> Delete </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

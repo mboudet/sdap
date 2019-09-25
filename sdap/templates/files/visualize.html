@@ -48,6 +48,10 @@
                                 <th scope="row">Type</th>
                                 <td>{{ file.type_display }}</td>
                             </tr>
+                            <tr>
+                                <th scope="row">Size</th>
+                                <td>{{ file.file.size | filesizeformat}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
