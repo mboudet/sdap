@@ -321,7 +321,7 @@ def view_file(request, fileid):
         data = content
 
     if file.type == "CSV":
-        df = pd.read_csv(file.file, sep=';', encoding="latin1")
+        df = pd.read_csv(file.file, sep=",", encoding="latin1")
         df_head = df.head()
         table_content = df_head.to_html(classes=["table","table-bordered","table-striped"], justify='center', max_cols=10)
         data = table_content

@@ -135,7 +135,7 @@
                         <div class="col-lg-4">
                             <div class="file-box">
                                 <div class="file">
-                                    <a href="{% url 'files:view_file' file.id %}">
+                                    
                                         <span class="corner"></span>
             
                                         <div class="icon">
@@ -147,15 +147,12 @@
                                             "></i>
                                         </div>
                                         <div class="file-name">
-                                            {{ file.name }}
+                                            <a href="{% url 'files:view_file' file.id %}">{{ file.name }}</a>
                                             <br>
-                                            <small>Added: {{ file.created_at }}</small>
                                             <small>Size: {{ file.file.size | filesizeformat}}</small>
+                                            <br>
+                                            <a class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_file' file.id %}"> <i class="fas fa-trash"></i> Delete </a>
                                         </div>
-                                    </a>
-                                    <button type="button" class="btn btn-danger btn-sm js-delete" data-url="{% url 'files:delete_file' file.id %}"
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
                                 </div>
                             </div>
                         </div>
