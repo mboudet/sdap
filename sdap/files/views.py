@@ -305,13 +305,19 @@ def view_file(request, fileid):
         'CSV': ['Table', 'Pieplot', 'Barplot']
     }
 
-    data =""
+    data = ""
 
     if file.type == "TEXT":
-        content = ""
+        maxLine = 30
+        lineNumber = 0
+        content = "<br>"
         with file.file.open('r') as f:
             for line in f.readlines():
+                lineNumber +=1
                 content += line + "<br>"
+                if lineNumber > maxLine:
+                    content = "<br><i><b>This is an abridged version of the file content. To see the full content, please select 'Visualize'</i></b><br>" + content
+                    break
         data = content
 
     if file.type == "CSV":
@@ -448,3 +454,11 @@ def get_children(folder):
         files += children['files']
         folders += children['folders']
     return {'files': files, 'folders': folders}
+
+def get_parents(file_or_folder):
+    parents = []
+    parent = file_or_folder.folder
+    while parent:
+        parents.append(parent)
+        parent = parent.folder
+    return parents
