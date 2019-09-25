@@ -42,10 +42,18 @@ class File(models.Model):
         ('EXPRESSION_MATRIX', 'Expression matrix'),
     )
 
+    SEP_TYPE = (
+        ('\t', 'Tab'),
+        (',', 'Comma'),
+        (';', 'Semicolon'),
+        (' ', 'Space'),
+    )
+
     name = models.CharField(max_length=200)
     description = models.TextField("description", blank=True)
     type = models.CharField(max_length=50, choices=FILE_TYPE, default="TEXT")
     file = models.FileField(upload_to='files/')
+    sep_type = models.CharField(max_length=50, choices=SEP_TYPE, default=",")
     folder = models.ForeignKey(Folder, blank=True, null=True, on_delete=models.CASCADE, related_name='files')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s_created_by')
