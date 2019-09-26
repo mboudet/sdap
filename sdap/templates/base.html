@@ -58,9 +58,9 @@
               </a>
               <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
                 <a class="dropdown-item" href="#">Start</a>
-                <a class="dropdown-item" href="#">Running jobs</a>
+                <a class="dropdown-item" href="{% url 'jobs:running_jobs' %}">Running jobs</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Browse tools</a>
+                <a class="dropdown-item" href="{% url 'tools:index' %}">Browse tools</a>
                 <a class="dropdown-item" href="#">Pipelines <span class="badge badge-pill badge-default">soon</span></a>
                 <a class="dropdown-item" href="#">Visualization</a>
               </div>
