@@ -7,7 +7,7 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.10-Linux-x86
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "envs_dirs:" > /root/.condarc && \
-    echo "  - /app/tools" >> /root/.condarc
+    echo "  - /app/tools/conda_envs" >> /root/.condarc
 
 RUN addgroup -S django \
     && adduser -S -G django django
