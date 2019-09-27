@@ -12,6 +12,10 @@
   border-color: #eed3d7;
 }
 
+body{
+  background-color: #f7f7f7;
+}
+
 .file-box {
   float: left;
   width: 220px;
