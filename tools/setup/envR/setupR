@@ -9,7 +9,7 @@ if [[ $? -eq 1 ]]; then
 fi
 conda activate condaR
 Rscript packages_install.R packages/
-mkdir -p temp
-Rscript data_install.R packages/ temp/
-rm -rf temp
+#mkdir -p temp
+#Rscript data_install.R packages/ temp/
+#rm -rf temp
 conda deactivate
