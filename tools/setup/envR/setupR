@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. /opt/conda/etc/profile.d/conda.sh
+
+conda info --envs | grep 'condaR' &> /dev/null
+
+if [[ $? -eq 1 ]]; then
+	conda create -y -n condaR R=3.5.1
+fi
+conda activate condaR
+Rscript packages_install.R packages/
+#mkdir -p temp
+#Rscript data_install.R packages/ temp/
+#rm -rf temp
+conda deactivate
