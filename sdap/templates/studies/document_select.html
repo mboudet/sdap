@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container-fluid">
+        <form id = "test-form" data-url=>
+        <div class="table-responsive-xl">
+            <table class="table">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th scope="col">Study</th>
+                        <th scope="col">Select data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for study in studies %}
+                    <tr style="text-align:center;">
+                        <td>{{study.article}}</td>
+                        <td>
+                            <select>
+                                {% for file in study.data.all %}
+                                    <option value="{{file.id}}">{{file.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>            
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/studies.js' %}"></script>
+{% endblock %}

@@ -78,7 +78,8 @@ LOCAL_APPS = [
     "sdap.groups.apps.GroupsAppConfig",
     "sdap.files.apps.FilesAppConfig",
     "sdap.tools.apps.ToolsAppConfig",
-    "sdap.jobs.apps.JobsAppConfig"
+    "sdap.jobs.apps.JobsAppConfig",
+    "sdap.studies.apps.StudiesAppConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

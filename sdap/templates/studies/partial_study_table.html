@@ -1,0 +1,19 @@
+{% for study in studies %}
+<tr study_id="{{study.id}}">
+<td>{{study.article}}</td>
+<td>{{study.pmid}}</td>
+<td>{{study.ome}}</td>
+<td>{{study.technology}}</td>
+<td>{{study.species}}</td>
+<td>{{study.experimental_design}}</td>
+<td>{{study.topics}}</td>
+<td>{{study.tissues}}</td>
+<td>{{study.sex}}</td>
+<td>{{study.dev_stage}}</td>
+<td>{{study.age}}</td>
+<td>{{study.antibody}}</td>
+<td>{{study.mutant}}</td>
+<td>{{study.cell_sorted}}</td>
+<td>{{study.keywords}}</td>
+</tr>
+{% endfor %}
