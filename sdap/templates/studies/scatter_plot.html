@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="container-fluid">
-        <form id = "test-form" data-url="{% url 'studies:render_table' %}">
+        <form id = "study-form" data-url="{% url 'studies:render_table' %}">
         <div class="table-responsive-xl">
             <table class="table" id="studies">
                 <thead>
@@ -25,6 +25,9 @@
             </table>
         </div>
         </form>
+        <tr>
+        <p id="summary"> Please select one or more studies. </p>
+        <button type="button" class="btn btn-success" id="nextButton" data-url="{% url 'studies:select_documents' %}" disabled> Next</button>
     </div>
 {% endblock %}
 

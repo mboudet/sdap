@@ -34,7 +34,7 @@ class ExpressionStudyFilterForm(forms.Form):
         # Get all values for columns
         for study in studies:
             for key, value in columns.items():
-                value |= set(getattr(study, key, "").split(","))
+                value |= set(getattr(study, key, []))
 
         for key, value in columns.items():
             choices = ((None, "All"),)

@@ -71,6 +71,7 @@ THIRD_PARTY_APPS = [
     'guardian',
     "rest_framework",
     "django_celery_beat",
+    "django_better_admin_arrayfield.apps.DjangoBetterAdminArrayfieldConfig",
 ]
 
 LOCAL_APPS = [

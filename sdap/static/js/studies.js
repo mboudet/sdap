@@ -17,7 +17,7 @@ $(function () {
   selectRows = []
 
   var loadTable = function () {
-    var form = $("#test-form")
+    var form = $("#study-form")
     $.ajax({
       url: form.attr("data-url"),
       type: 'get',
@@ -40,10 +40,49 @@ $(function () {
         row.css("background-color", "white");
         selectRows.splice(index, 1);
     }
+    summarize()
+  }
+
+  var summarize = function(){
+    var summary = $("#summary");
+    if(selectRows.length == 0){
+        summary.html("Please select one or more studies")
+        $("#nextButton").prop('disabled', true);
+    } else {
+        summary.html(selectRows.length + " studies selected")
+        $("#nextButton").prop('disabled', false);
+    }
+
+  }
+
+  var goToDocuments = function () {
+    var button = $("#nextButton");
+    var url = button.attr("data-url");
+    var query_string = "?"
+    for (i = 0; i < selectRows.length; i++){
+        query_string += "id=" + selectRows[i] + "&";
+    }
+    query_string = query_string.slice(0, -1)
+    document.location.href = url + query_string;
+  }
+
+  var checkSelect = function(){
+    if($('option[disabled]:selected').length == 0){
+        $("#graphButton").prop('disabled', false);
+    }
+  }
+
+  var graphMe = function () {
+    var form = $("#document-form");
+    var data = form.serializeArray();
+    console.log(data);
   }
 
   /* Binding */
     $("#filter").on("change", "select", loadTable);
     $("#filter").on("keyup", "input", loadTable);
     $("#table").on("click", "tr", selectMe);
+    $("#nextButton").on("click", goToDocuments);
+    $("#document-form").on("change", "select", checkSelect);
+    $("#graphButton").on("click", graphMe);
 });
