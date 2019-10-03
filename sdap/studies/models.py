@@ -23,10 +23,14 @@ class ExpressionData(models.Model):
     def save(self, *args, **kwargs):
         super(ExpressionData, self).save(*args, **kwargs)
         dIndex={'Sample':0}
-        with self.file.file.open('r') as f:
-            for line in f.readlines():
-                sIdList = line.decode().rstrip().split("\t")[0]
-                dIndex[sIdList] = f.tell()
+        pointer_list = []
+        f =  open(self.file.path)
+        while f.readline() != '':
+            pointer_list.append(f.tell())
+        for pointer in pointer_list:
+            f.seek(pointer)
+            sIdList = f.readline().rstrip().split("\t")[0]
+            dIndex[sIdList] = pointer
         pickle.dump(dIndex, open(self.file.path +".pickle","wb"))
 
 class ExpressionStudy(models.Model):

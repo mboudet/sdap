@@ -31,6 +31,7 @@ class GeneAdmin(admin.ModelAdmin):
                              }
         ),
     ]
+    list_display = ['symbol', 'gene_id']
 
 
 

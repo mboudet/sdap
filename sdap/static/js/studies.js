@@ -73,9 +73,11 @@ $(function () {
   }
 
   var graphMe = function () {
-    var form = $("#document-form");
-    var data = form.serializeArray();
-    console.log(data);
+    var select = $("#document_select");
+    var study_id = select.attr("study_id");
+    var document_id = select.val();
+    var url = $("#graphButton").attr("data-url");
+    document.location.href = url + "?study_id=" + study_id + "&document_id=" + document_id;
   }
 
   /* Binding */

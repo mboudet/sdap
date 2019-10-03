@@ -8,10 +8,12 @@ import uuid
 import shutil
 import time
 
+import pickle
+
 # Get requested values from file
-def getValue(study, selectedvalues):
-    dIndex = cPickle.load(open((study.file.path + ".pickle"))
-    fList = open((study.file.path, "r")
+def getValues(data, selectedvalues):
+    dIndex = pickle.load(open(data.file.path + ".pickle", 'rb'))
+    fList = data.file.file.open("rb")
     result = {}
     for val in selectedvalues :
         if str(val) in dIndex:
@@ -23,8 +25,8 @@ def getValue(study, selectedvalues):
     return result
 
 # Get classes from pickle file
-def getClasses(study):
-    dIndex = cPickle.load(open(study.file.path + ".pickle"))
+def getClasses(data):
+    dIndex = pickle.load(open(data.file.path + ".pickle", 'rb'))
     result = []
     for index in dIndex :
         if "Class" in index :
@@ -43,25 +45,25 @@ def bw_nrd0(x):
         lo = 1
     return 0.9 * lo *len(x)**-0.2
 
-def get_graph_data_full(study, selected_class=None):
+def get_graph_data_full(file, selected_class=None):
 
     result = {'charts':[],'warning':[],'time':''}
     start_time = time.time()
     chart = {}
     # Should not happen. We select the class before
-    chart['classes'] = getClasses(study)
+    chart['classes'] = getClasses(file)
     if not selected_class:
         selected_class = chart['classes'][0]
-    groups = getValue(study, [selected_class])
+    groups = getValues(file, [selected_class])
     groups = np.array(groups[selected_class])
     _, idx = np.unique(groups, return_index=True)
     uniq_groups = groups[np.sort(idx)[::-1]]
     # Maybe we should have done this at the previous step
-    samples = getValue(study,['Sample'])
+    samples = getValues(file,['Sample'])
     samples = np.array(samples['Sample'])
 
-    x = np.array(getValues(study, ['X'])['X'])
-    y = np.array(getValue(study, ['Y'])['Y'])
+    x = np.array(getValues(file, ['X'])['X'])
+    y = np.array(getValues(file, ['Y'])['Y'])
     chart['config']={'displaylogo':False,'modeBarButtonsToRemove':['toImage','zoom2d','pan2d','lasso2d','resetScale2d']}
     chart['data']=[]
     chart['description'] = ""
@@ -101,28 +103,28 @@ def get_graph_data_full(study, selected_class=None):
     result['time'] = interval
     return result
 
-def get_graph_data_genes(study, selected_class=None, gene):
+def get_graph_data_genes(file, gene, selected_class=None):
 
     ensemblgene = gene.ensemble_id
 
     result = {'warning':[],'time':''}
     start_time = time.time()
     # We should do this in the view, and select the class before
-    classes =  getClasses(study)
+    classes =  getClasses(file)
     if not selected_class:
         selected_class = classes[0]
-    groups = getValue(study, [selected_class])
+    groups = getValues(file, [selected_class])
     groups = np.array(groups[selected_class])
     _, idx = np.unique(groups, return_index=True)
     uniq_groups = groups[np.sort(idx)[::-1]]
     # Maybe we should have done this at the previous step
-    samples = getValue(study,['Sample'])
+    samples = getValues(file,['Sample'])
     samples = np.array(samples['Sample'])
-    x = np.array(getValue(study, ['X'])['X'])
-    y = np.array(getValue(study, ['Y'])['Y'])
+    x = np.array(getValues(file, ['X'])['X'])
+    y = np.array(getValues(file, ['Y'])['Y'])
 
-    genes = getValue(study, [gene.gene_id])
-    ensembl_genes = getValue(study, [ensemblgene])
+    genes = getValues(file, [gene.gene_id])
+    ensembl_genes = getValues(file, [ensemblgene])
 
     chart = {}
     gene_name = gene.symbol
