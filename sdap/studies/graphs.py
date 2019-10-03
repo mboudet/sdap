@@ -43,7 +43,7 @@ def bw_nrd0(x):
         lo = 1
     return 0.9 * lo *len(x)**-0.2
 
-def get_graph_data_full(study, selected_class=None, selected_genes=[]):
+def get_graph_data_full(study, selected_class=None):
 
     result = {'charts':[],'warning':[],'time':''}
     start_time = time.time()
