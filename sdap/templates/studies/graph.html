@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+        {{study.article}} - {{document.name}}
+        <br>
+        <br>
+        {% crispy form %}
+        <br>
+        <form class="form-inline" id="graph-form">
+            <select id="class_select">
+                {% for class in classes %}
+                    <option value="{{class}}">{{class}}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <br>
+        <div id="graph" data-url="{% url 'studies:graph_data' %}?document_id={{document.id}}" style="text-align:center;">
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{% static 'js/studies_graph.js' %}"></script>
+{% endblock %}
+
