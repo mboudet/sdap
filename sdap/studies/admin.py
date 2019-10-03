@@ -24,10 +24,19 @@ class ExpressionDataAdmin(admin.ModelAdmin):
         ),
     ]
 
+class GeneAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,               {'fields': ['gene_id','tax_id','symbol','synonyms','description','homolog_id','ensemble_id'
+                                        ]
+                             }
+        ),
+    ]
+
 
 
 admin.site.register(ExpressionStudy, ExpressionStudyAdmin)
 admin.site.register(ExpressionData, ExpressionDataAdmin)
+admin.site.register(Gene, GeneAdmin)
 
 
 

@@ -53,3 +53,16 @@ class ExpressionStudy(models.Model):
 
     def __str__(self):
         return self.pmid
+
+class Gene(models.Model):
+
+    gene_id =  models.CharField(max_length=50)
+    tax_id =  models.CharField(max_length=50, blank=True)
+    symbol =  models.CharField(max_length=50, blank=True)
+    synonyms =  models.TextField(blank=True)
+    description =  models.TextField(blank=True)
+    homolog_id =  models.CharField(max_length=50, blank=True)
+    ensemble_id =  models.CharField(max_length=50, blank=True)
+
+    def __str__(self):
+        return self.gene_id
