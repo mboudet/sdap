@@ -7,6 +7,8 @@
         {{study.article}} - {{document.name}}
         <br>
         <br>
+        {% crispy form %}
+        <br>
         <form class="form-inline" id="graph-form">
             <select id="class_select">
                 {% for class in classes %}

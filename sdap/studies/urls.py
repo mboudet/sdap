@@ -10,4 +10,5 @@ urlpatterns = [
     path('graph', views.show_graph, name='graph'),
     path('graph_data', views.get_graph_data, name="graph_data"),
     re_path(r'^gene-autocomplete/$', views.GeneAutocomplete.as_view(), name='gene-autocomplete'),
+    path('gene/<int:gene_id>', views.get_gene, name="get_gene")
 ]

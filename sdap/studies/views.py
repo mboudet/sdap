@@ -17,6 +17,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.contrib import messages
 from django.template.loader import render_to_string
+from django.db.models import Q
 
 from django.views.generic import CreateView
 
@@ -41,6 +42,12 @@ class GeneAutocomplete(autocomplete.Select2QuerySetView):
         if query:
             qs = qs.filter(Q(symbol__icontains=query) | Q(synonyms__icontains=query)| Q(gene_id__icontains=query))
         return qs
+
+def get_gene(request, gene_id):
+
+    gene = get_object_or_404(Gene, id=gene_id)
+    data = {'gene_id' : gene.gene_id, "symbol": gene.symbol, "homolog_id": gene.homolog_id, "ensembl_id": gene.ensemble_id}
+    return JsonResponse(data)
 
 def index(request):
 
@@ -97,8 +104,9 @@ def show_graph(request):
 
     document = get_object_or_404(ExpressionData, id=document_id)
     study = get_object_or_404(ExpressionStudy, id=study_id)
+    form = GeneFilterForm()
     classes = getClasses(document)
-    context = {'study': study, 'document': document, 'classes': classes}
+    context = {'study': study, 'document': document, 'classes': classes, 'form': form}
     return render(request, 'studies/graph.html', context)
 
 def get_graph_data(request):

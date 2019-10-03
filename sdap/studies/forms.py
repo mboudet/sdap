@@ -1,3 +1,4 @@
+from dal import autocomplete
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Column, HTML, Button, Fieldset
@@ -46,3 +47,23 @@ class ExpressionStudyFilterForm(forms.Form):
         self.helper.form_method = 'GET'
         self.helper.form_class = 'form-inline'
         self.helper.field_template = 'bootstrap3/layout/inline_field.html'
+
+class GeneFilterForm(forms.Form):
+
+    gene = forms.ModelChoiceField(
+        queryset=Gene.objects.all(),
+        widget=autocomplete.ModelSelect2(url='/studies/gene-autocomplete', attrs={'data-minimum-input-length': 2})
+    )
+
+    def __init__(self, *args, **kwargs):
+
+        super(GeneFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_method = 'GET'
+        self.helper.form_class = 'form-inline'
+        self.helper.field_template = 'bootstrap3/layout/inline_field.html'
+        self.helper.layout = Layout(
+            'gene',
+            StrictButton('Add', css_class='btn-default'),
+        )
+
