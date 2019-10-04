@@ -19,6 +19,7 @@ urlpatterns = [
     path("files/", include("sdap.files.urls", namespace="files")),
     path("tools/", include("sdap.tools.urls", namespace="tools")),
     path("jobs/", include("sdap.jobs.urls", namespace="jobs")),
+    path("studies/", include("sdap.studies.urls", namespace="studies")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

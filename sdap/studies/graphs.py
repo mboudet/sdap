@@ -68,6 +68,7 @@ def get_graph_data_full(file, selected_class=None):
     chart['data']=[]
     chart['description'] = ""
     chart['name'] = "Classification by: %s" % (selected_class)
+
     chart['layout'] = { #'autosize': True,
                         'width':"",
                         'height':"",

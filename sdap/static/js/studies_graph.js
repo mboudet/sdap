@@ -1,7 +1,6 @@
 $(function () {
 
   /* Functions */
-  
 
   var loadGraph = function () {
     var div = $("#graph")
@@ -23,11 +22,17 @@ $(function () {
   };
 
   
+        Plotly.newPlot('graph', chart.data, chart.layout, chart.config);
+      }
+    });
+  };
+
   $(document).ready(function() {
     loadGraph();
   });
 
   $("#graph-form").on("change", "select", loadGraph);
+
 
   $("#menu-toggle").click(function(e) {
     e.preventDefault();
@@ -46,6 +51,5 @@ $(function () {
       height: 0.9 * $(window).height()
     })
   });
-
 
 });
