@@ -68,12 +68,14 @@ def get_graph_data_full(file, selected_class=None):
     chart['data']=[]
     chart['description'] = ""
     chart['name'] = "Classification by: %s" % (selected_class)
-    chart['layout'] = { 'width':1180,
-                        'height':800,
+
+    chart['layout'] = { #'autosize': True,
+                        'width':"",
+                        'height':"",
                         'yaxis':{'autorange': True,'showgrid': False,'showticklabels': False,'zeroline': True,'showline': False, 'autotick': True},
                         'xaxis':{'showticklabels': False,'autorange': True,'showgrid': False,'zeroline': True,'showline': False,'autotick': True},
                         'autoexpand': True,
-                        'showlegend': False,
+                        'showlegend': True,
                         'legend': {'yanchor':'bottom','orientation':'h','traceorder':'reversed'},
                         'title':'',
                         'hovermode':'closest'

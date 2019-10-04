@@ -321,13 +321,14 @@ def view_file(request, fileid):
         data = content
 
     if file.type == "CSV":
-        df = pd.read_csv(file.file, sep=file.sep, encoding="latin1")
+        df = pd.read_csv(file.file, sep=file.sep_type, encoding="latin1")
         df_head = df.head()
         table_content = df_head.to_html(classes=["table","table-bordered","table-striped"], justify='center', max_cols=10)
         data = table_content
 
     context = {'types': v_types[file.type], 'file': file, 'data':data}
     return render(request, 'files/visualize.html', context)
+
 
 
 def get_visualization(request, fileid):
@@ -353,12 +354,11 @@ def get_visualization(request, fileid):
             data['form'] = render_to_string('files/form.html',
                 context,
                 request=request
-            )
-
+            ) 
         else:
             # What if it's not tab separated?
             # Check file existence
-            df = pd.read_csv(file.file, sep=",", encoding="latin1")
+            df = pd.read_csv(file.file, sep=file.sep_type, encoding="latin1")
             if request.GET.get('transpose', False):
                 df = df.transpose()
             df_head = df.head()
@@ -406,7 +406,7 @@ def show_data(file, post_data):
         content = "<img src='" + file.file.url + "'></img>"
         data['content'] = content
     elif file.type == "CSV":
-        df = pd.read_csv(file.file, sep=",", encoding="latin1")
+        df = pd.read_csv(file.file, sep=file.sep_type, encoding="latin1")
         if 'transposed' in post_data:
             df = df.transpose()
         if post_data['type'] == "Table":
@@ -417,6 +417,8 @@ def show_data(file, post_data):
         elif post_data['type'] == "Barplot":
             data['content'] = createJsonViewBarPlot(df, post_data["Yvalues"])
     return data
+
+
 
 
 
