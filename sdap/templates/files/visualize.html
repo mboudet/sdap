@@ -52,6 +52,10 @@
                                 <th scope="row">Size</th>
                                 <td>{{ file.file.size | filesizeformat}}</td>
                             </tr>
+                            <tr>
+                                    <th scope="row"></th>
+                                    <td><a class="btn btn-outline-default waves-effect" href="{% url 'files:download_file' file.id %}"><i class="fas fa-download"></i> Download</a></td>
+                                </tr>
                         </tbody>
                     </table>
                 </div>

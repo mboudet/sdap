@@ -32,13 +32,21 @@ class FileCreateForm(forms.ModelForm):
 
     class Meta:
         model = File
+<<<<<<< Updated upstream
         fields = ["name", "description", "type", "file", "folder","tags"]
+=======
+        fields = ["name", "description", "type", "file", "folder","sep_type"]
+>>>>>>> Stashed changes
         labels = {
             "name": "Name of the file",
             "description": "A short description of the file",
             "type": "Type of the file",
             "folder": "This file will be placed in this folder",
+<<<<<<< Updated upstream
             "tags":"File annotation",
+=======
+            "sep_type": "File caracter separator"
+>>>>>>> Stashed changes
         }
 
     def __init__(self, *args, **kwargs):

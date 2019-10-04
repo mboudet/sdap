@@ -38,6 +38,14 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Category.objects.exclude(category_of=None)
 
+# Create your views here.
+class AnalyseIndexView(LoginRequiredMixin, generic.ListView):
+    template_name = 'tools/index.html'
+    context_object_name = 'category_list'
+
+    def get_queryset(self):
+        return Category.objects.exclude(category_of=None)
+
 def DetailView(request, toolid):
     model = Tool
     template_name = 'tools/detail.html'
